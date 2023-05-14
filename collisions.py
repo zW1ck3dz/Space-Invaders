@@ -6,7 +6,7 @@ import turtle
 import math
 import random
 
-#On utilise le théorème de Pythagor pour vérifier les collisions
+# On utilise le théorème de Pythagor pour vérifier les collisions
 def collision(a, b):
     """Fonction qui vérifie si une collision balle-cible ou joueur-cible a lieu"""
     distance = math.sqrt((a.xcor()-b.xcor())**2 + (a.ycor()-b.ycor())**2)
@@ -19,11 +19,11 @@ def collision(a, b):
 def collisionbc(collision):
     """Fonction qui gère une collision entre une balle et une cible"""
     if collision(balle, cible):
-        #On réinitialise la balle
+        # On réinitialise la balle
         balle.hideturtle()
-        etatballe = "ready" #Réinitialisation de l'état de la balle pour pouvoir tirer à nouveau
-        balle.setposition(0, -500)#On enlève la balle de la fenêtre pour s'assurer qu'une autre cible ne rentre pas dedans
-        #On replace la cible 
+        etatballe = "ready" # Réinitialisation de l'état de la balle pour pouvoir tirer à nouveau
+        balle.setposition(0, -500)# On enlève la balle de la fenêtre pour s'assurer qu'une autre cible ne rentre pas dedans
+        # On replace la cible 
         x = random.randint(-330, 330)
         y = random.randint(200, 300)
         cible.setposition(x, y)
@@ -32,7 +32,7 @@ def collisionbc(collision):
 def collisionjc(collision):
     """Fonction qui gère une collision entre le joueur et une cible"""
     if collision(joueur, cible):
-        #On enlève tout de l'écran car la partie est finie
+        # On enlève tout de l'écran car la partie est finie
         joueur.hideturtle()
         cible.hideturtle()          
         stylo = turtle.Turtle()

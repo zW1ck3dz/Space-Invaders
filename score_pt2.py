@@ -5,10 +5,10 @@ fait le 10/05/2023 par Jason"""
 
 import turtle
 
-#Template de ce qui sera affiché
+# Template de ce qui sera affiché
 AFFICHE = "Score : {}"
 
-#Mise en place du score initial
+# Mise en place du score initial
 score = 0
 
 def score():

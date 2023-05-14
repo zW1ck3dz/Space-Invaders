@@ -5,7 +5,7 @@ fait le ... par Lucas """
 import turtle
 import random
 
-def joueur():
+def hero():
     """Création du héros"""
     hero = turtle.Turtle()
     turtle.register_shape("hero.gif")
@@ -13,6 +13,23 @@ def joueur():
     hero.penup()
     hero.speed(0)
     hero.setposition(0, -300)
+    
+    x_hero = hero.xcor()
+    y_hero = hero.ycor()
+    
+    # Mise en place du laser sans le mécanisme de tirer (autre fichier)
+    laser = turtle.Turtle()
+    turtle.register_shape("laser.gif")
+    laser.shape("laser.gif")
+    laser.penup()
+#     laser.hideturtle
+    laser.speed(0)
+    
+    x_laser = x_hero
+    y_laser = y_hero + 35
+    laser.setposition(x_laser, y_laser)
+        
+        
     
 def cibles():
     """Création de l'ensemble des cibles, et leur caractéristiques"""

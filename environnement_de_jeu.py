@@ -3,7 +3,7 @@
 Créé le ... par Lucas"""
 
 import turtle
-from personnages import joueur, cibles
+from personnages import hero, cibles
 
 
 def fenetre():
@@ -29,5 +29,8 @@ def bords():
         stylo_bord.forward(700)
         stylo_bord.left(90) # angle de changement de direction (on veut un carré)
     
-    
+
+
+
+
 

@@ -16,7 +16,7 @@ def collision(a, b):
         return False
     
     
-def collisionbc(collision):
+def collisionbc(collision, etatballe):
     """Fonction qui gère une collision entre une balle et une cible"""
     if collision(balle, cible):
         # On réinitialise la balle
@@ -34,7 +34,8 @@ def collisionjc(collision):
     if collision(joueur, cible):
         # On enlève tout de l'écran car la partie est finie
         joueur.hideturtle()
-        cible.hideturtle()          
+        cible.hideturtle()
+        # On affiche le texte "GAME OVER"
         stylo = turtle.Turtle()
         stylo.speed(0)
         stylo.color("Red")

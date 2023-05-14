@@ -3,7 +3,7 @@
 Créé le ... par Lucas"""
 
 import turtle
-from personnages import hero, cibles
+
 
 
 def fenetre():

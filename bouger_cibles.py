@@ -1,10 +1,10 @@
 """Projet - Bouger les cibles
 
-fait le 3/05/2023 par Jason"""
+fait le 14/05/2023 par Jason"""
 
-#Boucle de jeu
-while True:
-    
+
+def bougercibles(cible):
+    """Cette fonction sert à faire bouger les cibles"""
     #Bouger les cibles
     for cible in cibles:
         x = cible.xcor()

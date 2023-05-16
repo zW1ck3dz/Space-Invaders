@@ -6,16 +6,20 @@ import turtle
 import math
 import random
 
-# On utilise le théorème de Pythagor pour vérifier les collisions
+def tuer(cible):
+    """Replacer le cible au début au contacte avec le laser"""      
+    x = random.randint(-330, 330)
+    y = random.randint(200, 300)
+    cible.setposition(x, y)
+    
 def collision(a, b):
     """Fonction qui vérifie si une collision balle-cible ou joueur-cible a lieu"""
     distance = math.sqrt((a.xcor()-b.xcor())**2 + (a.ycor()-b.ycor())**2)
     if distance < 18:
         return True
     else:
-        return False
-    
-    
+        return False   
+
 def collisionbc(collision, etatballe):
     """Fonction qui gère une collision entre une balle et une cible"""
     if collision(balle, cible):
@@ -45,4 +49,4 @@ def collisionjc(collision):
         stylo.write(FIN, move = False, align = "center",
                 font = ("Courier" , 72, "bold"))
         stylo.hideturtle()
-    
+     

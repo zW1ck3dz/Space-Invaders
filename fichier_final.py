@@ -7,7 +7,8 @@ import random
 
 from environnement_de_jeu import fenetre, bords
 from tirer_le_laser import tirer
-
+from bouger_héro import gauche, droit
+from collisions import tuer
 
 # Mise en place de l'environement de jeu
 fenetre()
@@ -31,7 +32,22 @@ laser.shape("laser.gif")
 laser.penup()
 laser.hideturtle()
 laser.speed(0)
+
+def tirer(hero, laser):
+    laser.showturtle()
+    x_laser = hero.xcor()
+    y_laser = hero.ycor() + 35
+    laser.setposition(x_laser, y_laser)
+    laser.showturtle()
+    
+    v_laser = 30
+    
+    while laser.ycor() < 350:
+        y_laser += v_laser
+        laser.sety(y_laser)
         
+    laser.hideturtle()
+    
 # Les cibles
 cibles = []
 nb_cibles = 7
@@ -52,11 +68,14 @@ for cible in cibles:
                 
 turtle.listen()
 turtle.onkeypress(lambda: tirer(hero, laser), "space")
+turtle.onkeypress(lambda: gauche(hero), "Left")
+turtle.onkeypress(lambda: droit(hero), "Right")
 
 # Boucle de jeu principal 
 while True:
     
-    # Mouvement constant des cibles 
+    
+    # Mouvement des cibles (écrit par Jason et implémenté par Lucas)
     for cible in cibles:
         x = cible.xcor()
         x += vitessecible
@@ -70,8 +89,14 @@ while True:
                 y -= 54
                 cible.sety(y)
             # Inversion de la vitesse pour changer de direction
-            vitessecible *= -1
+            vitessecible *= -1.1
+            
+        if (cible.xcor() - 12) <= laser.xcor() <= (cible.ycor() + 12) and (cible.ycor() - 12) <= laser.ycor() <= (cible.ycor() + 12):
+            tuer(cible)
+            laser.hideturtle()
+            
     
+
     
     turtle.update()
         

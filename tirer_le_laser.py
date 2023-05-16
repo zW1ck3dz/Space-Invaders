@@ -3,7 +3,8 @@
 fait le 14.05.2023 par Lucas """
 
 import turtle
-    
+import time
+
 def tirer(hero, laser):
     laser.showturtle()
     x_laser = hero.xcor()
@@ -12,7 +13,15 @@ def tirer(hero, laser):
     laser.showturtle()
     
     v_laser = 30
-    while True:
+    
+    while laser.ycor() < 350:
         y_laser += v_laser
         laser.sety(y_laser)
+        laser.sety(y)
+      
+    laser.hideturtle()
+
+        
+
+    
     

@@ -9,7 +9,6 @@ from environnement_de_jeu import fenetre, bords
 from tirer_le_laser import tirer
 
 
-
 # Mise en place de l'environement de jeu
 fenetre()
 bords()
@@ -36,6 +35,7 @@ laser.speed(0)
 # Les cibles
 cibles = []
 nb_cibles = 7
+vitessecible = 3
 turtle.register_shape("cible.gif")
     
 for i in range(nb_cibles):
@@ -48,21 +48,29 @@ for cible in cibles:
     x = random.randint(-330, 330)
     y = random.randint(200, 300)
     cible.setposition(x, y)
-    
+                
+                
+turtle.listen()
+turtle.onkeypress(lambda: tirer(hero, laser), "space")
 
-            
-  
-
-    
 # Boucle de jeu principal 
 while True:
-    turtle.listen()
-    turtle.onkeypress(lambda: tirer(hero, laser), "space")
     
-    
-    
-    
-    
+    # Mouvement constant des cibles 
+    for cible in cibles:
+        x = cible.xcor()
+        x += vitessecible
+        cible.setx(x)
+        
+        # Le changement de direction quand une cible arrive à un bord
+        if cible.xcor() > 330 or cible.xcor() < -330:
+            # Assurer que TOUT les ennemis bougent
+            for cible in cibles:
+                y = cible.ycor()
+                y -= 54
+                cible.sety(y)
+            # Inversion de la vitesse pour changer de direction
+            vitessecible *= -1
     
     
     turtle.update()

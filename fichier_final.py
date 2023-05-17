@@ -6,8 +6,8 @@ import turtle
 import random
 
 from environnement_de_jeu import fenetre, bords
-from bouger_heros import gauche, droit
-from collision import tuer
+from bouger_héro import gauche, droit
+from collisions import tuer
 from game_over import fin, relancer
 
 

@@ -12,6 +12,9 @@ def fenetre():
     fn.setup(width = 1000, height = 1000)
     fn.bgpic("background.gif")
     fn.title("Space Invaders")
+    fn.tracer(0)
+    
+    return fn
 
 
 def bords():

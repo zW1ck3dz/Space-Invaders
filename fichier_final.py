@@ -6,12 +6,11 @@ import turtle
 import random
 
 from environnement_de_jeu import fenetre, bords
-from tirer_le_laser import tirer
 from bouger_héro import gauche, droit
 from collisions import tuer
 
 # Mise en place de l'environement de jeu
-fenetre()
+fn = fenetre()
 bords()
     
 # Affichage du score (Jason)
@@ -27,31 +26,19 @@ hero.setposition(0, -300)
     
 # Le laser
 laser = turtle.Turtle()
+laser.hideturtle()
+laser.speed(0)
 turtle.register_shape("laser.gif")
 laser.shape("laser.gif")
 laser.penup()
-laser.hideturtle()
-laser.speed(0)
+laser.setposition(hero.xcor(), hero.ycor() + 35)
+laser.showturtle()
+v_laser = 1
 
-def tirer(hero, laser):
-    laser.showturtle()
-    x_laser = hero.xcor()
-    y_laser = hero.ycor() + 35
-    laser.setposition(x_laser, y_laser)
-    laser.showturtle()
-    
-    v_laser = 30
-    
-    while laser.ycor() < 350:
-        y_laser += v_laser
-        laser.sety(y_laser)
-        
-    laser.hideturtle()
-    
 # Les cibles
 cibles = []
 nb_cibles = 7
-vitessecible = 3
+vitessecible = 0.1
 turtle.register_shape("cible.gif")
     
 for i in range(nb_cibles):
@@ -67,13 +54,21 @@ for cible in cibles:
                 
                 
 turtle.listen()
-turtle.onkeypress(lambda: tirer(hero, laser), "space")
 turtle.onkeypress(lambda: gauche(hero), "Left")
 turtle.onkeypress(lambda: droit(hero), "Right")
 
 # Boucle de jeu principal 
 while True:
     
+    fn.update()
+    
+    # Mouvement constant du laser
+    y_laser = laser.ycor()
+    y_laser += v_laser
+    laser.sety(y_laser)
+    
+    if y_laser > 350:
+        laser.setposition(hero.xcor(), hero.ycor() + 35)
     
     # Mouvement des cibles (écrit par Jason et implémenté par Lucas)
     for cible in cibles:
@@ -88,12 +83,13 @@ while True:
                 y = cible.ycor()
                 y -= 54
                 cible.sety(y)
-            # Inversion de la vitesse pour changer de direction
-            vitessecible *= -1.1
+            # Inversion de la vitesse pour changer de direction et augmentation de la vitesse 
+            vitessecible *= -1
             
-        if (cible.xcor() - 12) <= laser.xcor() <= (cible.ycor() + 12) and (cible.ycor() - 12) <= laser.ycor() <= (cible.ycor() + 12):
+        if (cible.xcor() - 12) <= laser.xcor() <= (cible.xcor() + 12) and (cible.ycor() - 12) <= laser.ycor() <= (cible.ycor() + 12):
+            laser.setposition(hero.xcor(), hero.ycor() + 35)
             tuer(cible)
-            laser.hideturtle()
+            
             
     
 

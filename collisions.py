@@ -1,6 +1,6 @@
 """Projet - Vérification des collisions
 
-fait le 14/05/2023 par Jason"""
+fait le 16/05/2023 par Jason"""
 
 import random
 

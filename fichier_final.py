@@ -6,23 +6,37 @@ import turtle
 import random
 
 from environnement_de_jeu import fenetre, bords
-from tirer_le_laser import tirer
-from bouger_héro import gauche, droit
-from collisions import tuer, collision, collisionbc, collisionhc
-from final_score import score, AFFICHE, s, point
+from bouger_heros import gauche, droit
+from collision import tuer
+from game_over import fin, relancer
+
 
 # Mise en place de l'environement de jeu (écrit par Lucas et légèrement modifié par Jason)
-fn = turtle.Screen()
-fn.setup(width = 1000, height = 1000)
-fn.bgpic("background.gif")
-fn.title("Space Invaders")
-fn.tracer(0) #rend le jeu "smooth"
+fenetre()
 bords()
-    
-# Affichage du score (Jason)
-score(s)
-    
-# Le héro
+
+
+# Mise en place du score initial (Jason)
+s = 0
+
+# Stylo qui écrira le score
+stylo_score = turtle.Turtle()
+stylo_score.speed(0)
+stylo_score.color("Lime")
+stylo_score.penup()
+stylo_score.hideturtle()
+stylo_score.goto(0, 400)
+
+# Template pour le score
+AFFICHE = "Score : {}"
+
+
+# Templates des messages affichés à la fin d'une partie
+MORT = "GAME OVER"
+REJOUER = "Veuillez relancer le programme pour rejouer"
+
+
+# Stylo qui "dessinera" le héros
 hero = turtle.Turtle()
 turtle.register_shape("hero.gif")
 hero.shape("hero.gif")
@@ -30,33 +44,22 @@ hero.penup()
 hero.speed(0)
 hero.setposition(0, -300)
     
-# Le laser
+    
+# Stylo qui "dessinera" le laser
 laser = turtle.Turtle()
 turtle.register_shape("laser.gif")
 laser.shape("laser.gif")
 laser.penup()
 laser.hideturtle()
 laser.speed(0)
+laser.setposition(hero.xcor(), hero.ycor() + 35)
+laser.showturtle()
 
-def tirer(hero, laser):
-    laser.showturtle()
-    x_laser = hero.xcor()
-    y_laser = hero.ycor() + 35
-    laser.setposition(x_laser, y_laser)
-    laser.showturtle()
-    
-    v_laser = 30
-    
-    while laser.ycor() < 350:
-        y_laser += v_laser
-        laser.sety(y_laser)
-        
-    laser.hideturtle()
-    
+
 # Les cibles
 cibles = []
-nb_cibles = 7
-vitessecible = 1.8
+nb_cibles = 10
+vitessecible = 2
 turtle.register_shape("cible.gif")
     
 for i in range(nb_cibles):
@@ -70,22 +73,39 @@ for cible in cibles:
     y = random.randint(200, 300)
     cible.setposition(x, y)
                 
-                
+
+# Des fonctions qui feront bouger le héros
+# à droite ou à gauche en fonction de la touche appuyée par l'utilisateur
 turtle.listen()
-turtle.onkeypress(lambda: tirer(hero, laser), "space")
 turtle.onkeypress(lambda: gauche(hero), "Left")
 turtle.onkeypress(lambda: droit(hero), "Right")
 
+
 # Boucle de jeu principal 
 while True:
+    # Affichage du score
+    stylo_score.clear()
+    SCORE = AFFICHE.format(s)
+    stylo_score.write(SCORE, move = False, align = "center",
+        font = ("Courier" , 30, "bold"))
+
     
-    fn.update()
+    # Définition de la vitesse et du mouvement du laser
+    v_laser = 30
+    y_laser = laser.ycor()
+    y_laser += v_laser
+    laser.sety(y_laser)
+    if y_laser > 350:
+        laser.hideturtle()
+        laser.setposition(hero.xcor(), hero.ycor() + 35)
+        laser.showturtle()
+        
+    
     # Mouvement des cibles (écrit par Jason et implémenté par Lucas)
     for cible in cibles:
         x = cible.xcor()
         x += vitessecible
         cible.setx(x)
-        
         # Le changement de direction quand une cible arrive à un bord
         if cible.xcor() > 330 or cible.xcor() < -330:
             # Assurer que TOUT les ennemis bougent
@@ -94,51 +114,29 @@ while True:
                 y -= 54
                 cible.sety(y)
             # Inversion de la vitesse pour changer de direction
-            vitessecible *= -1.1
-            
-        if (cible.xcor() - 12) <= laser.xcor() <= (cible.ycor() + 12) and (cible.ycor() - 12) <= laser.ycor() <= (cible.ycor() + 12):
+            vitessecible *= -1
+        # Vérification d'une collision entre le laser et une cible
+        elif ((cible.xcor() - 12) <= laser.xcor() <= (cible.xcor() + 12)
+                and (cible.ycor() - 12) <= laser.ycor() <= (cible.ycor() + 12)):
+            laser.setposition(hero.xcor(), hero.ycor() + 35)
             tuer(cible)
-            laser.hideturtle()
-            
-        if collision(laser, cible):
-            # On réinitialise la balle
-            balle.hideturtle()
-            #etatballe = "ready" # Réinitialisation de l'état de la balle pour pouvoir tirer à nouveau
-            balle.setposition(0, -500)# On enlève la balle de la fenêtre pour s'assurer qu'une autre cible ne rentre pas dedans
-            # On replace la cible 
-            x = random.randint(-330, 330)
-            y = random.randint(200, 300)
-            cible.setposition(0, 10000)
-            point(s)
-        
-        if collision(hero, cible):
-            # On enlève tout de l'écran car la partie est finie
+            s += 1
+        # On vérifie si une des cibles est arrivée à la même
+        # hauteur que le joueur et si oui, la partie se finit
+        elif (cible.ycor() - 12) < (hero.ycor() + 35):
             hero.hideturtle()
-            cible.hideturtle()
-            # On affiche le texte "GAME OVER"
-            stylo = turtle.Turtle()
-            stylo.speed(0)
-            stylo.color("Red")
-            stylo.penup()
-            stylo.setposition(0, 0)
-            FIN = "GAME OVER"
-            stylo.write(FIN, move = False, align = "center",
-                    font = ("Courier" , 72, "bold"))
-            stylo.hideturtle()
+            laser.hideturtle()
+            for cible in cibles:
+                cible.hideturtle()
+            # Message de fin de partie
+            fin(MORT)
+            # Message pour comment rejouer
+            relancer(REJOUER)
+            break # On quitte la boucle de jeu
+
 
     
-   
-        
-        
-    
-    
-    
+    turtle.update()
+
 
     
-
-        
-
-
-
-
-

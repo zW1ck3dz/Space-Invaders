@@ -1,13 +1,12 @@
 """ Space Invaders - Création de l'environnement de jeu
 
-Créé le ... par Lucas"""
+Créé le ... par Lucas """
 
 import turtle
 
 
-
 def fenetre():
-    """Création de la fenêtre de jeu"""
+    """ Fonction qui crée la fenêtre de jeu """
     fn = turtle.Screen()
     fn.setup(width = 1000, height = 1000)
     fn.bgpic("background.gif")
@@ -16,7 +15,7 @@ def fenetre():
 
 
 def bords():
-    """Traçage des bords de l'espace virtuelle du jeu"""
+    """ Fonction qui trace les bords de l'espace virtuelle du jeu """
     stylo_bord = turtle.Turtle()
     stylo_bord.speed(0) # vitesse de déplacement du stylo mise au max 
     stylo_bord.color("lime green")
@@ -30,6 +29,7 @@ def bords():
         stylo_bord.forward(700)
         stylo_bord.left(90) # angle de changement de direction (on veut un carré)
     
+
 
 
 

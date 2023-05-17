@@ -4,8 +4,6 @@ Créé le ... par Lucas"""
 
 import turtle
 
-
-
 def fenetre():
     """Création de la fenêtre de jeu"""
     fn = turtle.Screen()

@@ -8,13 +8,21 @@ import random
 from environnement_de_jeu import fenetre, bords
 from bouger_héro import gauche, droit
 from collisions import tuer
+from game_over import game_over
 
 # Mise en place de l'environement de jeu
 fn = fenetre()
 bords()
     
-# Affichage du score (Jason)
-    
+# Définition du score
+s = 0
+AFFICHE = "Score : {}"
+stylo_score = turtle.Turtle()
+stylo_score.speed(0)
+stylo_score.color("Lime")
+stylo_score.penup()
+stylo_score.hideturtle()
+stylo_score.goto(0, 400)  
     
 # Le héro
 hero = turtle.Turtle()
@@ -33,7 +41,7 @@ laser.shape("laser.gif")
 laser.penup()
 laser.setposition(hero.xcor(), hero.ycor() + 35)
 laser.showturtle()
-v_laser = 1
+v_laser = 2
 
 # Les cibles
 cibles = []
@@ -60,7 +68,12 @@ turtle.onkeypress(lambda: droit(hero), "Right")
 # Boucle de jeu principal 
 while True:
     
-    fn.update()
+    # Affichage du score
+    stylo_score.clear()
+    SCORE = AFFICHE.format(s)
+    stylo_score.write(SCORE, move = False, align = "center",
+        font = ("Courier" , 30, "bold"))
+    
     
     # Mouvement constant du laser
     y_laser = laser.ycor()
@@ -70,6 +83,7 @@ while True:
     if y_laser > 350:
         laser.setposition(hero.xcor(), hero.ycor() + 35)
     
+    
     # Mouvement des cibles (écrit par Jason et implémenté par Lucas)
     for cible in cibles:
         x = cible.xcor()
@@ -78,23 +92,27 @@ while True:
         
         # Le changement de direction quand une cible arrive à un bord
         if cible.xcor() > 330 or cible.xcor() < -330:
-            # Assurer que TOUT les ennemis bougent
+            # Assurer que TOUS les ennemis bougent
             for cible in cibles:
                 y = cible.ycor()
                 y -= 54
                 cible.sety(y)
-            # Inversion de la vitesse pour changer de direction et augmentation de la vitesse 
+            # Inversion de la vitesse pour changer de direction
             vitessecible *= -1
             
         if (cible.xcor() - 12) <= laser.xcor() <= (cible.xcor() + 12) and (cible.ycor() - 12) <= laser.ycor() <= (cible.ycor() + 12):
             laser.setposition(hero.xcor(), hero.ycor() + 35)
             tuer(cible)
-            
-            
+            s += 1
+        
+        if (cible.ycor() - 12) < (hero.ycor() + 35):
+            game_over(cibles, hero, laser)
+            break
+        
     
 
-    
     turtle.update()
+    fn.update()
         
         
     

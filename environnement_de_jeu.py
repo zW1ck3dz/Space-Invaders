@@ -1,6 +1,6 @@
 """ Space Invaders - Création de l'environnement de jeu
 
-Créé le ... par Lucas """
+Créé le 14/05/2023 par Lucas et modifié par Jason le 16/05/2023 """
 
 import turtle
 
@@ -12,8 +12,6 @@ def fenetre():
     fn.bgpic("background.gif")
     fn.title("Space Invaders")
     fn.tracer(0)
-    
-    
 
 
 def bords():

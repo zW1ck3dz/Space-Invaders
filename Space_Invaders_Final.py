@@ -1,8 +1,8 @@
 """ Space Invaders - fichier final
 
-crée le 14.05.2023 par Lucas."""
+crée le 14.05.2023 par Lucas & Jason."""
 
-import turtle
+from turtle import register_shape, listen, onkeypress, update, Turtle
 import random
 
 from environnement_de_jeu import fenetre, bords
@@ -17,10 +17,10 @@ bords()
 
 
 # Mise en place du score initial (Jason)
-s = 0
+S = 0
 
 # Stylo qui écrira le score
-stylo_score = turtle.Turtle()
+stylo_score = Turtle()
 stylo_score.speed(0)
 stylo_score.color("Lime")
 stylo_score.penup()
@@ -37,17 +37,17 @@ REJOUER = "Veuillez relancer le programme pour rejouer"
 
 
 # Stylo qui "dessinera" le héros
-hero = turtle.Turtle()
-turtle.register_shape("hero.gif")
+hero = Turtle()
+register_shape("hero.gif")
 hero.shape("hero.gif")
 hero.penup()
 hero.speed(0)
 hero.setposition(0, -300)
-    
-    
+
+
 # Stylo qui "dessinera" le laser
-laser = turtle.Turtle()
-turtle.register_shape("laser.gif")
+laser = Turtle()
+register_shape("laser.gif")
 laser.shape("laser.gif")
 laser.penup()
 laser.hideturtle()
@@ -58,69 +58,69 @@ laser.showturtle()
 
 # Les cibles
 cibles = []
-nb_cibles = 10
-vitessecible = 1.8
-turtle.register_shape("cible.gif")
-    
-for i in range(nb_cibles):
-    cibles.append(turtle.Turtle())
-        
+NB_CIBLES = 10
+VITESSE_CIBLE = 1.8
+register_shape("cible.gif")
+
+for i in range(NB_CIBLES):
+    cibles.append(Turtle())
+
 for cible in cibles:
     cible.shape("cible.gif")
     cible.speed(0)
     cible.penup()
-    x = random.randint(-300, 300)
-    y = random.randint(200, 300)
-    cible.setposition(x, y)
-                
+    coordonnee_x = random.randint(-300, 300)
+    coordonnee_y = random.randint(200, 300)
+    cible.setposition(coordonnee_x, coordonnee_y)
+
 
 # Des fonctions qui feront bouger le héros
 # à droite ou à gauche en fonction de la touche appuyée par l'utilisateur
-turtle.listen()
-turtle.onkeypress(lambda: gauche(hero), "Left")
-turtle.onkeypress(lambda: droit(hero), "Right")
+listen()
+onkeypress(lambda: gauche(hero), "Left")
+onkeypress(lambda: droit(hero), "Right")
 
 
-# Boucle de jeu principal 
+# Boucle de jeu principal
 while True:
     # Affichage du score
     stylo_score.clear()
-    SCORE = AFFICHE.format(s)
+    SCORE = AFFICHE.format(S)
     stylo_score.write(SCORE, move = False, align = "center",
         font = ("Courier" , 30, "bold"))
 
-    
+
     # Définition de la vitesse et du mouvement du laser
-    v_laser = 30
+    V_LASER = 30
     y_laser = laser.ycor()
-    y_laser += v_laser
+    y_laser += V_LASER
     laser.sety(y_laser)
     if y_laser > 350:
         laser.hideturtle()
         laser.setposition(hero.xcor(), hero.ycor() + 35)
         laser.showturtle()
-        
-    
+
+
     # Mouvement des cibles (écrit par Jason et implémenté par Lucas)
     for cible in cibles:
-        x = cible.xcor()
-        x += vitessecible
-        cible.setx(x)
+        coordonnee_x = cible.xcor()
+        coordonnee_x += VITESSE_CIBLE
+        cible.setx(coordonnee_x)
         # Le changement de direction quand une cible arrive à un bord
         if cible.xcor() > 330 or cible.xcor() < -330:
             # Assurer que TOUT les ennemis bougent
             for cible in cibles:
-                y = cible.ycor()
-                y -= 54
-                cible.sety(y)
+                coordonnee_y = cible.ycor()
+                coordonnee_y -= 54
+                cible.sety(coordonnee_y)
             # Inversion de la vitesse pour changer de direction
-            vitessecible *= -1
+            VITESSE_CIBLE *= -1
         # Vérification d'une collision entre le laser et une cible
         elif ((cible.xcor() - 14) <= laser.xcor() <= (cible.xcor() + 14)
                 and (cible.ycor() - 14) <= laser.ycor() <= (cible.ycor() + 14)):
             laser.setposition(hero.xcor(), hero.ycor() + 35)
             tuer(cible)
-            s += 1
+            S += 1
         # On vérifie si une des cibles est arrivée à la même
         # hauteur que le joueur et si oui, la partie se finit
         elif (cible.ycor() - 12) < (hero.ycor() + 35):
@@ -137,7 +137,4 @@ while True:
 
     # Mise à jour de la fenêtre à chaque fois
     # que la boucle est éxécutée
-    turtle.update()
-
-    
-
+    update()

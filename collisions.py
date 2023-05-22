@@ -7,15 +7,6 @@ import random
 
 def tuer(cible):
     """ Fonction qui replace la cible lors d'un contacte laser-cible """      
-    x = random.randint(-330, 330)
-    y = random.randint(200, 300)
-    cible.setposition(x, y)
-   
-    
-
-
-
-
-
-
-     
+    coordonnee_x = random.randint(-330, 330)
+    coordonnee_y = random.randint(200, 300)
+    cible.setposition(coordonnee_x, coordonnee_y)

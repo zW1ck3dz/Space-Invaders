@@ -5,21 +5,15 @@ fait par Lucas le 16.05.2023 """
 
 def gauche(hero):
     """ Fonction qui sert à bouger le héros vers la gauche """
-    x = hero.xcor()
-    x -= 40
-    
-    if x < -320:
-        x = -320
-        
-    hero.setx(x)
-    
-    
+    coordonnee_x = hero.xcor()
+    coordonnee_x -= 40
+    coordonnee_x = max(coordonnee_x, -320)
+    hero.setx(coordonnee_x)
+
+
 def droit(hero):
     """ Fonction qui sert à bouger le héros vers la droite """
-    x = hero.xcor()
-    x += 40
-    
-    if x > 320:
-        x = 320
-        
-    hero.setx(x)
+    coordonnee_x = hero.xcor()
+    coordonnee_x += 40
+    coordonnee_x = min(coordonnee_x, 320)
+    hero.setx(coordonnee_x)
